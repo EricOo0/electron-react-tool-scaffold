@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 // 官方提供的图标
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Link } from 'react-router-dom';
+import { LaptopOutlined, NotificationOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, theme, Button } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import InputBox from '../component/comunication';
 
 const { Header, Content, Sider } = Layout;
 // map 函数遍历数组中的每个元素; 对于每个元素 (key)，它创建一个新的对象，
@@ -25,7 +26,7 @@ const sub_items = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon
         }),
     };
 });
-const App = () => {
+const Homepage = () => {
     // 假设 nav_items 和 sub_items 已经定义并且可以正常使用
     const [selectedNavContent, setSelectedNavContent] = useState(nav_items[0]); // 1. 设置状态来存储选中的内容
     const [selectedSubContent, setSelectedSubContent] = useState({ parent: sub_items[0], child: sub_items[0].children[0] }); // 1. 设置状态来存储选中的内容
@@ -44,6 +45,10 @@ const App = () => {
         setSelectedSubContent({ parent: sub1, child: sub2 });
 
 
+    };
+    const navigate = useNavigate();
+    const handleSettingsClick = () => {
+        navigate('/setting');
     };
 
     const {
@@ -70,6 +75,10 @@ const App = () => {
                         minWidth: 0,
                     }}
                 />
+                <Content style={{ color: 'White', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>
+                    Your HomePage
+                </Content>
+                <Button icon={<SettingOutlined />} shape="circle" onClick={handleSettingsClick} />
             </Header>
 
             <Layout>
@@ -118,21 +127,33 @@ const App = () => {
                             borderRadius: borderRadiusLG,
                         }}
                     >
-                        {selectedNavContent && `nav Content for ${selectedNavContent.label}`}
-                        <br />
-                        {selectedSubContent && (
-                            <>
-                                {`sub Content for ${selectedSubContent.parent.label}`}
-                                {` - sub child Content for ${selectedSubContent.child.label}`}
-                                <br></br>
-                                {<Link to="/index">Go to Another Page</Link>}
-                            </>
-
+                        {`${selectedNavContent.label}` === "nav 1" &&
+                            `${selectedSubContent.parent.label}` === "subnav 1"
+                            && `${selectedSubContent.child.label}` === "option1" ? (
+                            <div>
+                                {/* 特定组件和内容 */}
+                                <h1>Specific Component</h1>
+                                <InputBox></InputBox>
+                            </div>
+                        ) : (
+                            <div>
+                                {selectedNavContent && `nav Content for ${selectedNavContent.label}`}
+                                <br />
+                                {selectedSubContent && (
+                                    <>
+                                        {`sub Content for ${selectedSubContent.parent.label}`}
+                                        {` - sub child Content for ${selectedSubContent.child.label}`}
+                                        <br />
+                                        {<Link to="/index">Go to Another Page</Link>}
+                                    </>
+                                )}
+                            </div>
                         )}
+
                     </Content>
                 </Layout>
             </Layout>
         </Layout>
     );
 };
-export default App;
+export default Homepage;

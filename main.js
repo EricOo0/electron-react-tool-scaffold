@@ -1,5 +1,5 @@
 // 引入electron并创建一个Browserwindow
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('path')
 const url = require('url')
 
@@ -30,14 +30,27 @@ function createWindow() {
             slashes: true,
         })
     );
+    // 在主进程中显示 alert 弹框的示例函数
+    function showAlert(msg) {
+        const options = {
+            type: 'info',
+            title: 'Information',
+            message: `Receive msg from react process.msg=[${msg}]`,
+            buttons: ['OK']
+        };
+
+        dialog.showMessageBox(mainWindow, options);
+    }
     // 主线程 和 渲染进程通信，可以通过preload.js 暴露方法进行通信
     // 监听渲染进程的消息
     ipcMain.on('message-from-renderer-channel', (event, arg) => {
+
         console.log("event,arg:", event, arg); // 打印渲染进程发送的数据
+        showAlert(arg)
         // 可以将数据发送回渲染进程
-        event.reply('message-from-main-channel', "message-from-main-body");
+        event.reply('message-from-main-channel', `message-from-main-body: receive:${arg}`);
     });
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
 
 }

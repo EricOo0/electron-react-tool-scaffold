@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './component/APP/app';
-import App2 from './App';
+import Homepage from './pages/homepage';
+import Logo from './pages/logo';
+import Setting from './pages/setting'
 import reportWebVitals from './reportWebVitals';
 
 // import { Provider } from 'react-redux'
@@ -23,8 +24,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <HashRouter>
     <Routes>
-      <Route path="/" element={<App />} />s
-      <Route path="/index" element={<App2 />} />s
+      <Route path="/" element={<Homepage />} />
+      <Route path="/index" element={<Logo />} />
+      <Route path="/setting" element={<Setting />} />
     </Routes>
   </HashRouter>
 
